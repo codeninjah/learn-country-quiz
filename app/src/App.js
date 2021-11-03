@@ -38,6 +38,10 @@ const analytics = getAnalytics(app)
 
 const db = getDatabase(app)
 
+//console.log("Ditt token är")
+const token = 'some-token';
+
+
 
 function App() {
 
