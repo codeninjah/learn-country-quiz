@@ -14,9 +14,6 @@ import { getAnalytics } from "firebase/analytics"
 import { ref, getDatabase, set, update } from "firebase/database"
 import { useObject } from 'react-firebase-hooks/database'
 
-// Import the functions you need from the SDKs you need
-
-import { initializeApp } from "firebase/app";
 
 // TODO: Add SDKs for Firebase products that you want to use
 
