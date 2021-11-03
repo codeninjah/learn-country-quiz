@@ -14,28 +14,7 @@ import { getAnalytics } from "firebase/analytics"
 import { ref, getDatabase, set, update } from "firebase/database"
 import { useObject } from 'react-firebase-hooks/database'
 
-
-// TODO: Add SDKs for Firebase products that you want to use
-
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-
-// Your web app's Firebase configuration
-
-const firebaseConfig = {
-  apiKey: "AIzaSyA23W8Xt_oYUOqEoF6emmz-gUNMKRL5iqs",
-  authDomain: "learn-country-quiz.firebaseapp.com",
-  databaseURL: "https://learn-country-quiz-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "learn-country-quiz",
-  storageBucket: "learn-country-quiz.appspot.com",
-  messagingSenderId: "99518626682",
-  appId: "1:99518626682:web:37abd119124fdb6722b4c3"
-};
-
-
 // Initialize Firebase
-
-const app = initializeApp(firebaseConfig);
 
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvxyz', 5)
 
@@ -53,6 +32,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+//const app = initializeApp(firebaseConfig);
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
