@@ -9,6 +9,8 @@ jobs:
     defaults:
       run:
         working-directory: ./app
+      uses:
+        working-directory: ./app
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -22,9 +24,6 @@ jobs:
           npm run build:prod
 
       - name: Deploy
-        defaults:
-          uses:
-            working-directory: ./app
         uses: lowply/deploy-firebase@v0.0.5
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
