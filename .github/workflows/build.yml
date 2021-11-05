@@ -8,6 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: ./app
+    defaults:
+      run:
+        working-directory: ./app
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
