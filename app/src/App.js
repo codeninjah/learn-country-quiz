@@ -21,15 +21,14 @@ const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvxyz', 5)
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-	apiKey: "AIzaSyAvraf5s5RDgCPkjh63-hFgi10j11fiPxM",
-	authDomain: "country-quiz-dc997.firebaseapp.com",
-	databaseURL: "https://country-quiz-dc997-default-rtdb.europe-west1.firebasedatabase.app",
-	projectId: "country-quiz-dc997",
-	storageBucket: "country-quiz-dc997.appspot.com",
-	messagingSenderId: "9659259197",
-	appId: "1:9659259197:web:101698eeac61dd64ea4d54",
-	measurementId: "G-SM2WHHKWFM"
-}
+  apiKey: "AIzaSyA23W8Xt_oYUOqEoF6emmz-gUNMKRL5iqs",
+  authDomain: "learn-country-quiz.firebaseapp.com",
+  databaseURL: "https://learn-country-quiz-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "learn-country-quiz",
+  storageBucket: "learn-country-quiz.appspot.com",
+  messagingSenderId: "99518626682",
+  appId: "1:99518626682:web:37abd119124fdb6722b4c3"
+};
 
 // Initialize Firebase
 //const app = initializeApp(firebaseConfig);
