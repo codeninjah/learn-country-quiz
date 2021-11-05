@@ -22,6 +22,9 @@ jobs:
           npm run build:prod
 
       - name: Deploy
+        defaults:
+          uses:
+            working-directory: ./app
         uses: lowply/deploy-firebase@v0.0.5
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
