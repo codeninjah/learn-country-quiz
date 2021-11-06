@@ -21,14 +21,14 @@ const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvxyz', 5)
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyA23W8Xt_oYUOqEoF6emmz-gUNMKRL5iqs",
-  authDomain: "learn-country-quiz.firebaseapp.com",
-  databaseURL: "https://learn-country-quiz-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "learn-country-quiz",
-  storageBucket: "learn-country-quiz.appspot.com",
-  messagingSenderId: "99518626682",
-  appId: "1:99518626682:web:37abd119124fdb6722b4c3"
-};
+	apiKey: "AIzaSyA23W8Xt_oYUOqEoF6emmz-gUNMKRL5iqs",
+	authDomain: "learn-country-quiz.firebaseapp.com",
+	databaseURL: "https://learn-country-quiz-default-rtdb.europe-west1.firebasedatabase.app",
+	projectId: "learn-country-quiz",
+	storageBucket: "learn-country-quiz.appspot.com",
+	messagingSenderId: "99518626682",
+	appId: "1:99518626682:web:37abd119124fdb6722b4c3"
+}
 
 // Initialize Firebase
 //const app = initializeApp(firebaseConfig);
@@ -38,7 +38,7 @@ const analytics = getAnalytics(app)
 const db = getDatabase(app)
 
 //console.log("Ditt token är")
-const token = 'some-token';
+const token = 'some-token'
 
 
 
@@ -150,6 +150,7 @@ const GamePage = ({ gameId, playerId }) => {
 
 const QuestionPage = ({ gameId, playerId }) => {
 	const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`))
+	const scoringFlag = !!JSON.parse(localStorage.getItem('scoring'))
 
 	if (loading) return <div className="fw6 fs5">Loading...</div>
 	const game = snapshot.val()
@@ -168,6 +169,10 @@ const QuestionPage = ({ gameId, playerId }) => {
 		updates[`/games/${gameId}/questions/${game.currentQuestion}/fastest`] = { player: playerId, answer: countryCode }
 		if (countryCode == question.correct) {
 			updates[`/games/${gameId}/score/${youKey}`] = game.score[youKey] + 1
+		} else {
+			if (scoringFlag) {
+				updates[`/games/${gameId}/score/${youKey}`] = game.score[youKey] - 1
+			}
 		}
 		await update(ref(db), updates)
 
@@ -195,10 +200,10 @@ const QuestionPage = ({ gameId, playerId }) => {
 					if (question.fastest && question.fastest.answer == countryCode) {
 						correct = question.fastest.answer === question.correct
 						if (question.fastest.player === playerId) {
-							youOrOpponent = `YOU ${correct ? ' +1' : ''}`
+							youOrOpponent = `YOU ${correct ? ' +1' : scoringFlag ? '-1' : ''}`
 						}
 						else {
-							youOrOpponent = `OPPONENT ${correct ? ' +1' : ''}`
+							youOrOpponent = `OPPONENT ${correct ? ' +1' : scoringFlag ? '-1' : ''}`
 						}
 					}
 					return (
