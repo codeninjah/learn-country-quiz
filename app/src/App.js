@@ -40,8 +40,6 @@ const db = getDatabase(app)
 //console.log("Ditt token är")
 const token = 'some-token'
 
-
-
 function App() {
 
 	return (
@@ -65,10 +63,9 @@ function App() {
 const StartPage = () => {
 	const [snapshot, loading, error] = useObject(ref(db, 'nextGame'))
 	const [location, setLocation] = useLocation()
-
 	if (loading) return <div className="fw6 fs5">Loading...</div>
 	const nextGame = snapshot.val()
-
+	const extraFlag = !!JSON.parse(localStorage.getItem("extraFlag"))
 
 	const play = async () => {
 		if (R.isNil(nextGame)) {
@@ -92,32 +89,61 @@ const StartPage = () => {
 			await update(ref(db), updates2)
 		}
 	}
-	return (
-		<div className="page">
-			<div className="st-flags">
-				<div className="f32"><div className={`flag aze`}></div></div>
-				<div className="f32"><div className={`flag bih`}></div></div>
-				<div className="f32"><div className={`flag brb`}></div></div>
-				<div className="f32"><div className={`flag swe`}></div></div>
-				<div className="f32"><div className={`flag bgd`}></div></div>
-				<div className="f32"><div className={`flag bel`}></div></div>
-				<div className="f32"><div className={`flag bfa`}></div></div>
-				<div className="f32"><div className={`flag bgr`}></div></div>
-				<div className="f32"><div className={`flag bhr`}></div></div>
-				<div className="f32"><div className={`flag bdi`}></div></div>
-				<div className="f32"><div className={`flag ben`}></div></div>
-				<div className="f32"><div className={`flag bmu`}></div></div>
-				<div className="f32"><div className={`flag brn`}></div></div>
-				<div className="f32"><div className={`flag bol`}></div></div>
-				<div className="f32"><div className={`flag bra`}></div></div>
-				<div className="f32"><div className={`flag bhs`}></div></div>
-				<div className="f32"><div className={`flag btn`}></div></div>
-				<div className="f32"><div className={`flag fra`}></div></div>
-				<div className="f32"><div className={`flag bwa`}></div></div>
+	if (extraFlag) {
+		const randomFlags = () => {
+			const flagList = Object.keys(countries)
+			const newFlagList = []
+			for (let i = 0; i < 16; i++) {
+				let unique = false
+				while (!unique) {
+					let number = Math.floor(Math.random() * (flagList.length -1))
+					if (!newFlagList.includes(flagList[number].toLowerCase())) {
+						newFlagList.push(flagList[number].toLowerCase())
+						unique = !unique
+					}
+				}
+			}
+			return newFlagList
+		}
+		return (
+			<div className="page">
+				<div className="st-flags">
+					{randomFlags().map(flag => (
+					<div className="f32" key={flag+2}><div className={`flag ${flag}`}></div></div>
+					))}
+				</div>
+				<div className="button btn-square" onClick={play}>Play</div>
 			</div>
-			<div className="button btn-square" onClick={play}>Play</div>
-		</div>
-	)
+		)
+	}
+	else {
+		return (
+			<div className="page">
+				<div className="st-flags">
+					<div className="f32"><div className={`flag aze`}></div></div>
+					<div className="f32"><div className={`flag bih`}></div></div>
+					<div className="f32"><div className={`flag brb`}></div></div>
+					<div className="f32"><div className={`flag swe`}></div></div>
+					<div className="f32"><div className={`flag bgd`}></div></div>
+					<div className="f32"><div className={`flag bel`}></div></div>
+					<div className="f32"><div className={`flag bfa`}></div></div>
+					<div className="f32"><div className={`flag bgr`}></div></div>
+					<div className="f32"><div className={`flag bhr`}></div></div>
+					<div className="f32"><div className={`flag bdi`}></div></div>
+					<div className="f32"><div className={`flag ben`}></div></div>
+					<div className="f32"><div className={`flag bmu`}></div></div>
+					<div className="f32"><div className={`flag brn`}></div></div>
+					<div className="f32"><div className={`flag bol`}></div></div>
+					<div className="f32"><div className={`flag bra`}></div></div>
+					<div className="f32"><div className={`flag bhs`}></div></div>
+					<div className="f32"><div className={`flag btn`}></div></div>
+					<div className="f32"><div className={`flag fra`}></div></div>
+					<div className="f32"><div className={`flag bwa`}></div></div>
+				</div>
+				<div className="button btn-square" onClick={play}>Play</div>
+			</div>
+		)
+	}
 }
 
 const GamePage = ({ gameId, playerId }) => {
@@ -233,6 +259,7 @@ const QuickResults = ({ you, opponent }) => {
 
 const ResultsPage = ({ gameId, playerId }) => {
 	const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`))
+	const tieFlag = !!JSON.parse(localStorage.getItem("tie"))
 
 	if (loading) return <div className="fw6 fs5">Loading...</div>
 	const game = snapshot.val()
@@ -245,12 +272,12 @@ const ResultsPage = ({ gameId, playerId }) => {
 	const youLost = (game.score[youKey] <= game.score[opponentKey])
 	const youTie = (game.score[youKey] == game.score[opponentKey])
 
-
+	console.log(tieFlag)
 	return (
 		<div className="page">
-			{youTie && <Tie you={game.score[youKey]} opponent={game.score[opponentKey]} />} 
-			{youWon && <Won you={game.score[youKey]} opponent={game.score[opponentKey]} />}
-			{youLost && <Lost you={game.score[youKey]} opponent={game.score[opponentKey]} />}
+			{youTie && tieFlag && <Tie you={game.score[youKey]} opponent={game.score[opponentKey]} />} 
+			{youWon && !tieFlag && <Won you={game.score[youKey]} opponent={game.score[opponentKey]} />}
+			{youLost && !youTie && <Lost you={game.score[youKey]} opponent={game.score[opponentKey]} />}
 			<Link href="/" className="re-home link">Home</Link>
 		</div>
 	)
