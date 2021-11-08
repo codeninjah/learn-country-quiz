@@ -6,19 +6,19 @@ This exercise is not primarily about programming but there will be coding needed
 ## Grading
 Your team will recieve one of the following grades: Fail, Pass (G) or Pass with distinction (VG). The table below outlines what tasks are needed to be completed in order to achieve a certian grade.
 
-Done | Step | Grading
---- | --- | ---
-✅ | 0 - Instructions | -
-✅ | 1 - [Set up a pipeline](1-pipeline.md) | **G**
-⬜ | 2 - [Basic feature flagging](2-basic-feature-flagging.md) | **G**
-⬜ | 3 - [Small improvements](3-small-improvements.md) | **G**
-⬜ | 4 - [Improved feature flagging](4-improved-feature-flagging.md) | **G**
-⬜ | 5 - [Randomized order and GDPR](5-randomized-order.md) | **G**
-⬜ | 6 - [Add Google analytics](6-google-analytics.md) | **G**
-⬜ | 7 - [Advanced feature flags](7-advanced-feature-flags.md) | **VG**
-⬜ | 8 - [New features and A/B testing](8-new-features-and-ab-testing.md) | **VG**
-⬜ | 9 - [Improvement suggestions](9-suggest-improvements.md) | **VG**
-⬜ | 10 - [Implement suggestions](10-implement-suggestions.md) | **Optional task**
+| Done | Step                                                                 | Grading           |
+| ---- | -------------------------------------------------------------------- | ----------------- |
+| ✅    | 0 - Instructions                                                     | -                 |
+| ✅    | 1 - [Set up a pipeline](1-pipeline.md)                               | **G**             |
+| ✅    | 2 - [Basic feature flagging](2-basic-feature-flagging.md)            | **G**             |
+| ✅    | 3 - [Small improvements](3-small-improvements.md)                    | **G**             |
+| ⬜    | 4 - [Improved feature flagging](4-improved-feature-flagging.md)      | **G**             |
+| ⬜    | 5 - [Randomized order and GDPR](5-randomized-order.md)               | **G**             |
+| ⬜    | 6 - [Add Google analytics](6-google-analytics.md)                    | **G**             |
+| ⬜    | 7 - [Advanced feature flags](7-advanced-feature-flags.md)            | **VG**            |
+| ⬜    | 8 - [New features and A/B testing](8-new-features-and-ab-testing.md) | **VG**            |
+| ⬜    | 9 - [Improvement suggestions](9-suggest-improvements.md)             | **VG**            |
+| ⬜    | 10 - [Implement suggestions](10-implement-suggestions.md)            | **Optional task** |
 
 
 ***NOTE:** As you go though the exercie steps, make sure to update this file by replacing the gray squares with green checkboxes so that company management can follow along and see how far you've gotten.*
