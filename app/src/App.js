@@ -74,6 +74,7 @@ const Setup = () => {
 			<button className="extraFlag" onClick={() => changeFlag("extraFlag")}>random flags: <span>false</span></button>
 			<button className="tie" onClick={() => changeFlag("tie")}>tie: <span>false</span></button>
 			<button className="improvedScoring" onClick={() => changeFlag("improvedScoring")}>improved scoring: <span>false</span></button>
+			<button className="randomizedOrder" onClick={() => changeFlag("randomizedOrder")}>randomized order: <span>false</span></button>
 			<Link to="/">Home</Link>
 		</div>
 	)
