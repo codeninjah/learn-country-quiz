@@ -143,3 +143,42 @@
 .re-home {
 	margin-top: 2rem;
 }
+
+.cookie-banner {
+	align-items: center;
+	background-color: #348934;
+	bottom: 0;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	height: 7rem;
+	justify-content: center;
+	width: 100vw;
+	padding: 3rem;
+	position: absolute;
+	z-index: 100;
+}
+
+.banner-buttons {
+	display: flex;
+	justify-content: space-between;
+	width: 10rem;
+}
+
+.banner-button {
+	border: none;
+	cursor: pointer;
+	outline: none;
+	padding: 0.5rem 1rem;
+}
+
+.cookie-info-wrapper {
+	display: grid;
+	place-items: center;
+}
+
+.info-box {
+	background-color: #afafaf;
+	padding: 2rem;
+	margin-bottom: 3rem;
+}

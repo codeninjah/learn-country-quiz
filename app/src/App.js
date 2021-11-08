@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import * as R from 'ramda'
 import { Link, Route, useLocation } from "wouter"
 import { customAlphabet } from 'nanoid'
@@ -54,18 +54,61 @@ function App() {
 						return <GamePage gameId={params.gameId} playerId={params.playerId} />
 					}}
 				</Route>
+				<Route path="/cookies">
+					<CookieInfo />
+				</Route>
 			</div>
 			<div className="footer"></div>
 		</div>
 	)
 }
 
+
+const CookieBanner = ({ setConsent, setLocation }) => {
+	return (
+		<div className="cookie-banner">
+			<h3>This site uses cookies for improvement purposes</h3>
+			<div className="banner-buttons">
+				<button className="banner-button" onClick={setConsent}>OK</button>
+				<button className="banner-button" onClick={() => setLocation('/cookies')}>Read more</button>
+			</div>
+		</div>
+	)
+}
+
+const CookieInfo = () => {
+	const [location, setLocation] = useLocation()
+
+	return (
+		<main className="cookie-info-wrapper">
+			<div className="info-box">
+				<h1>The cookies we use</h1>
+				<p>This site uses cookies to enhance user experience.</p>
+				<p>The cookies we use are:</p>
+				<ul>
+					<li>
+						<p><strong>Google Analytics</strong></p>
+						<p><em>This cookie tracks game interaction and sends the information to the developer. The data is used to see how users interact with the game and improve functionality.</em></p>
+					</li>
+				</ul>
+			</div>
+			<button onClick={() => setLocation('/')}>Ok, thanks</button>
+		</main>
+	)
+}
+
 const StartPage = () => {
+	const [consent, setConsent] = useState(!!localStorage.getItem('cookieConsent'))
 	const [snapshot, loading, error] = useObject(ref(db, 'nextGame'))
 	const [location, setLocation] = useLocation()
 	if (loading) return <div className="fw6 fs5">Loading...</div>
 	const nextGame = snapshot.val()
 	const extraFlag = !!JSON.parse(localStorage.getItem("extraFlag"))
+
+	const setConsentInStorage = () => {
+		localStorage.setItem('cookieConsent', 'true')
+		setConsent(true)
+	}
 
 	const play = async () => {
 		if (R.isNil(nextGame)) {
@@ -96,7 +139,7 @@ const StartPage = () => {
 			for (let i = 0; i < 16; i++) {
 				let unique = false
 				while (!unique) {
-					let number = Math.floor(Math.random() * (flagList.length -1))
+					let number = Math.floor(Math.random() * (flagList.length - 1))
 					if (!newFlagList.includes(flagList[number].toLowerCase())) {
 						newFlagList.push(flagList[number].toLowerCase())
 						unique = !unique
@@ -109,10 +152,15 @@ const StartPage = () => {
 			<div className="page">
 				<div className="st-flags">
 					{randomFlags().map(flag => (
-					<div className="f32" key={flag+2}><div className={`flag ${flag}`}></div></div>
+						<div className="f32" key={flag + 2}><div className={`flag ${flag}`}></div></div>
 					))}
 				</div>
 				<div className="button btn-square" onClick={play}>Play</div>
+				{
+					!consent && (
+						<CookieBanner setLocation={setLocation} setConsent={setConsentInStorage} />
+					)
+				}
 			</div>
 		)
 	}
@@ -141,6 +189,11 @@ const StartPage = () => {
 					<div className="f32"><div className={`flag bwa`}></div></div>
 				</div>
 				<div className="button btn-square" onClick={play}>Play</div>
+				{
+					!consent && (
+						<CookieBanner setLocation={setLocation} setConsent={setConsentInStorage} />
+					)
+				}
 			</div>
 		)
 	}
@@ -275,7 +328,7 @@ const ResultsPage = ({ gameId, playerId }) => {
 	console.log(tieFlag)
 	return (
 		<div className="page">
-			{youTie && tieFlag && <Tie you={game.score[youKey]} opponent={game.score[opponentKey]} />} 
+			{youTie && tieFlag && <Tie you={game.score[youKey]} opponent={game.score[opponentKey]} />}
 			{youWon && !tieFlag && <Won you={game.score[youKey]} opponent={game.score[opponentKey]} />}
 			{youLost && !youTie && <Lost you={game.score[youKey]} opponent={game.score[opponentKey]} />}
 			<Link href="/" className="re-home link">Home</Link>
