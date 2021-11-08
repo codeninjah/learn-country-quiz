@@ -21,6 +21,20 @@
 	justify-content: center;
 }
 
+.setup {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.setup button {
+	width: 100%;
+	text-align: left;
+}
+.setup button, .setup a {
+	margin: 8px;
+	padding: 8px;
+}
 .middle {
 	display: flex;
 	justify-content: center;

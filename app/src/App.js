@@ -54,8 +54,27 @@ function App() {
 						return <GamePage gameId={params.gameId} playerId={params.playerId} />
 					}}
 				</Route>
+				<Route path="/setup">
+					<Setup />
+				</Route>
 			</div>
 			<div className="footer"></div>
+		</div>
+	)
+}
+
+const Setup = () => {
+	const changeFlag = (flagString) => {
+		const flag = !!JSON.parse(localStorage.getItem(flagString))
+		localStorage.setItem(flagString, JSON.stringify(!flag))
+		document.querySelector("." + flagString + " span").innerText = JSON.stringify(flag)
+	}
+	return (
+		<div className="setup">
+			<button className="extraFlag" onClick={() => changeFlag("extraFlag")}>random flags: <span>false</span></button>
+			<button className="tie" onClick={() => changeFlag("tie")}>tie: <span>false</span></button>
+			<button className="improvedScoring" onClick={() => changeFlag("improvedScoring")}>improved scoring: <span>false</span></button>
+			<Link to="/">Home</Link>
 		</div>
 	)
 }
