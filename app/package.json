@@ -36,7 +36,7 @@
     "analyze:prod": "cross-env NODE_ENV=production BUNDLE_ANALYZE=true webpack --mode production",
     "analyze:dev": "cross-env BUNDLE_ANALYZE=true webpack --mode development",
     "test-ci": "mocha ./problems/**/test*.js --exit",
-    "test": "mocha ./problems/**/test*.js --parallel --watch",
+    "test": "mocha ./src/**/tests*.js --parallel --watch",
     "deploy": "firebase deploy --token 1//0ceAR2LflVQK-CgYIARAAGAwSNwF-L9Ir8hdWbs36jCppTo8IwOQdggiL2HoYh7I-UajaZlFD6qVzRih-KZ9xb992_C7ShWN3LIk"
   },
   "eslintConfig": {

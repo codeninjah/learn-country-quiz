@@ -1,13 +1,13 @@
-import countries from './countries'
+import countries from './countries.js'
 
 //const flags = []
 const flags = Object.keys(countries)
 console.log(flags)
 
-let rnd1 = Math.floor(Math.random() * (flags.length -1))
-let rnd2 = Math.floor(Math.random() * (flags.length -1))
-let rnd3 = Math.floor(Math.random() * (flags.length -1))
-let rnd4 = Math.floor(Math.random() * (flags.length -1))
+//let rnd1 = Math.floor(Math.random() * (flags.length -1))
+//let rnd2 = Math.floor(Math.random() * (flags.length -1))
+//let rnd3 = Math.floor(Math.random() * (flags.length -1))
+//let rnd4 = Math.floor(Math.random() * (flags.length -1))
 
 const randomFlags = () => {
 	const flagList = Object.keys(countries)
@@ -53,7 +53,7 @@ const hardCodedQuestions = {
 	}
 }
 
-const randomQuestions = {
+export const randomQuestions = {
 	1: randomFlags(),
 	2: randomFlags(),
 	3: randomFlags(),
