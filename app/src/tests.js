@@ -1,7 +1,14 @@
 import assert from 'assert'
-import {randomQuestions} from './utils.js'
+import { randomFlags } from './utils.js'
 
 
 describe("randomQuestions", () => {
-    it("[1, 2, 3, 4, 5]", () => assert.deepEqualEqual(randomQuestions([1, 2, 3, 4, 5]), [1, 3, 5]))
+  it('returns a unique list of countries', () => {
+    const response = randomFlags()
+    const countryArray = Object.values(response.alternatives)
+    console.log(countryArray)
+    const unique = [...new Set(countryArray)]
+
+    assert.equal(unique.length, 4)
   })
+})

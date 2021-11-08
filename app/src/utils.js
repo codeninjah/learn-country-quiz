@@ -9,14 +9,14 @@ console.log(flags)
 //let rnd3 = Math.floor(Math.random() * (flags.length -1))
 //let rnd4 = Math.floor(Math.random() * (flags.length -1))
 
-const randomFlags = () => {
+export const randomFlags = () => {
 	const flagList = Object.keys(countries)
 	const newFlagList = {}
 	const rightAnswer = Math.round(Math.random() * 3)
 	for (let i = 0; i < 4; i++) {
 		let unique = false
 		while (!unique) {
-			let number = Math.floor(Math.random() * (flagList.length -1))
+			let number = Math.floor(Math.random() * (flagList.length - 1))
 			if (!Object.values(newFlagList).includes(flagList[number].toLowerCase())) {
 				newFlagList[i] = flagList[number].toLowerCase()
 				unique = !unique
@@ -67,7 +67,7 @@ export const createGame = () => {
 	return {
 		currentQuestion: 1,
 		questions: generatedQuestions,
-		score: {player1: 0, player2: 0},
+		score: { player1: 0, player2: 0 },
 		status: 'starting',
 	}
 }
