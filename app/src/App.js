@@ -242,8 +242,11 @@ const ResultsPage = ({ gameId, playerId }) => {
 
 	const youWon = (game.score[youKey] >= game.score[opponentKey])
 
+	const youTie = (game.score[youKey] == game.score[opponentKey])
+
 	return (
 		<div className="page">
+			{youTie && <Tie you={game.score[youKey]} opponent={game.score[opponentKey]} />} 
 			{youWon && <Won you={game.score[youKey]} opponent={game.score[opponentKey]} />}
 			{!youWon && <Lost you={game.score[youKey]} opponent={game.score[opponentKey]} />}
 			<Link href="/" className="re-home link">Home</Link>
@@ -270,6 +273,16 @@ const Lost = ({ you, opponent }) => {
 		</div>
 	)
 }
+
+const Tie = ({ you, opponent }) => {
+	return (
+		<div className="results">
+			<div className="re-text">It's a TIE...</div>
+			<QuickResults you={you} opponent={opponent} />
+		</div>
+	)
+}
+
 
 export default App
 
