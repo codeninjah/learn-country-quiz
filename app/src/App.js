@@ -150,7 +150,7 @@ const GamePage = ({ gameId, playerId }) => {
 
 const QuestionPage = ({ gameId, playerId }) => {
 	const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`))
-	const scoringFlag = !!JSON.parse(localStorage.getItem('scoring'))
+	const scoringFlag = !!JSON.parse(localStorage.getItem('improvedScoring'))
 
 	if (loading) return <div className="fw6 fs5">Loading...</div>
 	const game = snapshot.val()
