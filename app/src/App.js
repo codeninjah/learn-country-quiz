@@ -228,6 +228,7 @@ const QuickResults = ({ you, opponent }) => {
 
 const ResultsPage = ({ gameId, playerId }) => {
 	const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`))
+	const tieFlag = !!JSON.parse(localStorage.getItem("tie"))
 
 	if (loading) return <div className="fw6 fs5">Loading...</div>
 	const game = snapshot.val()
@@ -240,11 +241,11 @@ const ResultsPage = ({ gameId, playerId }) => {
 	const youLost = (game.score[youKey] <= game.score[opponentKey])
 	const youTie = (game.score[youKey] == game.score[opponentKey])
 
-
+	console.log(tieFlag)
 	return (
 		<div className="page">
-			{youTie && <Tie you={game.score[youKey]} opponent={game.score[opponentKey]} />} 
-			{youWon && !youTie && <Won you={game.score[youKey]} opponent={game.score[opponentKey]} />}
+			{youTie && tieFlag && <Tie you={game.score[youKey]} opponent={game.score[opponentKey]} />} 
+			{youWon && !tieFlag && <Won you={game.score[youKey]} opponent={game.score[opponentKey]} />}
 			{youLost && !youTie && <Lost you={game.score[youKey]} opponent={game.score[opponentKey]} />}
 			<Link href="/" className="re-home link">Home</Link>
 		</div>
