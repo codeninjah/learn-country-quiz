@@ -53,7 +53,7 @@ const hardCodedQuestions = {
 	}
 }
 
-const testQuestions = {
+const randomQuestions = {
 	1: randomFlags(),
 	2: randomFlags(),
 	3: randomFlags(),
@@ -63,13 +63,26 @@ const testQuestions = {
 
 export const createGame = () => {
 	//const generatedQuestions = hardCodedQuestions
-	const generatedQuestions = testQuestions
-	return {
-		currentQuestion: 1,
-		questions: generatedQuestions,
-		score: {player1: 0, player2: 0},
-		status: 'starting',
+	if(localStorage.getItem("randomisedOrder")){
+		const generatedQuestions = randomQuestions
+		return {
+			currentQuestion: 1,
+			questions: generatedQuestions,
+			score: {player1: 0, player2: 0},
+			status: 'starting',
+		}
 	}
+	else{
+		const generatedQuestions = hardCodedQuestions
+		return {
+			currentQuestion: 1,
+			questions: generatedQuestions,
+			score: {player1: 0, player2: 0},
+			status: 'starting',
+		}
+	}
+	
+	
 }
 
 
