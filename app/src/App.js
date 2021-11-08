@@ -240,15 +240,17 @@ const ResultsPage = ({ gameId, playerId }) => {
 	const youKey = `player${playerId}`
 	const opponentKey = `player${parseInt(playerId) === 1 ? 2 : 1}`
 
-	const youWon = (game.score[youKey] >= game.score[opponentKey])
 
+	const youWon = (game.score[youKey] >= game.score[opponentKey])
+	const youLost = (game.score[youKey] <= game.score[opponentKey])
 	const youTie = (game.score[youKey] == game.score[opponentKey])
+
 
 	return (
 		<div className="page">
 			{youTie && <Tie you={game.score[youKey]} opponent={game.score[opponentKey]} />} 
 			{youWon && <Won you={game.score[youKey]} opponent={game.score[opponentKey]} />}
-			{!youWon && <Lost you={game.score[youKey]} opponent={game.score[opponentKey]} />}
+			{youLost && <Lost you={game.score[youKey]} opponent={game.score[opponentKey]} />}
 			<Link href="/" className="re-home link">Home</Link>
 		</div>
 	)
