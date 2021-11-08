@@ -1,11 +1,43 @@
+import countries from './countries'
+
+//const flags = []
+const flags = Object.keys(countries)
+console.log(flags)
+
+let rnd1 = Math.floor(Math.random() * (flags.length -1))
+let rnd2 = Math.floor(Math.random() * (flags.length -1))
+let rnd3 = Math.floor(Math.random() * (flags.length -1))
+let rnd4 = Math.floor(Math.random() * (flags.length -1))
+
+const randomFlags = () => {
+	const flagList = Object.keys(countries)
+	const newFlagList = {}
+	for (let i = 0; i < 4; i++) {
+		let unique = false
+		while (!unique) {
+			let number = Math.floor(Math.random() * (flagList.length -1))
+			if (!Object.values(newFlagList).includes(flagList[number].toLowerCase())) {
+				newFlagList[i] = flagList[number].toLowerCase()
+				unique = !unique
+			}
+		}
+	}
+	return {
+		alternatives: newFlagList,
+		correct: newFlagList[1]
+	}
+}
+
+const randomFlagList = randomFlags()
+console.log(randomFlagList)
 
 const hardCodedQuestions = {
 	1: {
 		alternatives: {
-			1: 'swe',
+			1: 'blz',
 			2: 'fra',
-			3: 'dnk',
-			4: 'bra',
+			3: 'cub',
+			4: 'swe',
 		},
 		correct: 'swe',
 	},
@@ -20,8 +52,17 @@ const hardCodedQuestions = {
 	}
 }
 
+const testQuestions = {
+	1: randomFlags(),
+	2: randomFlags(),
+	3: randomFlags(),
+	4: randomFlags(),
+	5: randomFlags(),
+}
+
 export const createGame = () => {
-	const generatedQuestions = hardCodedQuestions
+	//const generatedQuestions = hardCodedQuestions
+	const generatedQuestions = testQuestions
 	return {
 		currentQuestion: 1,
 		questions: generatedQuestions,
