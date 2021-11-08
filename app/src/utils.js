@@ -12,6 +12,7 @@ let rnd4 = Math.floor(Math.random() * (flags.length -1))
 const randomFlags = () => {
 	const flagList = Object.keys(countries)
 	const newFlagList = {}
+	const rightAnswer = Math.round(Math.random() * 3)
 	for (let i = 0; i < 4; i++) {
 		let unique = false
 		while (!unique) {
@@ -24,7 +25,7 @@ const randomFlags = () => {
 	}
 	return {
 		alternatives: newFlagList,
-		correct: newFlagList[1]
+		correct: newFlagList[rightAnswer]
 	}
 }
 
