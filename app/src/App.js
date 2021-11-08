@@ -241,9 +241,9 @@ const ResultsPage = ({ gameId, playerId }) => {
 
 	return (
 		<div className="page">
+			{youTie && <Tie you={game.score[youKey]} opponent={game.score[opponentKey]} />} 
 			{youWon && <Won you={game.score[youKey]} opponent={game.score[opponentKey]} />}
 			{!youWon && <Lost you={game.score[youKey]} opponent={game.score[opponentKey]} />}
-			{youTie && <Tie you={game.score[youKey]} opponent={game.score[opponentKey]} />} 
 			<Link href="/" className="re-home link">Home</Link>
 		</div>
 	)
@@ -272,7 +272,6 @@ const Lost = ({ you, opponent }) => {
 const Tie = ({ you, opponent }) => {
 	return (
 		<div className="results">
-			<img src={dog} style={{ width: '80%' }} />
 			<div className="re-text">It's a TIE...</div>
 			<QuickResults you={you} opponent={opponent} />
 		</div>
