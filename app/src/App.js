@@ -57,12 +57,14 @@ function App() {
 				<Route path="/cookies">
 					<CookieInfo />
 				</Route>
+				<Route path="/setup">
+					<Setup />
+				</Route>
 			</div>
 			<div className="footer"></div>
 		</div>
 	)
 }
-
 
 const CookieBanner = ({ setConsent, setLocation }) => {
 	return (
@@ -72,6 +74,23 @@ const CookieBanner = ({ setConsent, setLocation }) => {
 				<button className="banner-button" onClick={setConsent}>OK</button>
 				<button className="banner-button" onClick={() => setLocation('/cookies')}>Read more</button>
 			</div>
+		</div>
+	)
+}
+
+const Setup = () => {
+	const changeFlag = (flagString) => {
+		const flag = !!JSON.parse(localStorage.getItem(flagString))
+		localStorage.setItem(flagString, JSON.stringify(!flag))
+		document.querySelector("." + flagString + " span").innerText = JSON.stringify(flag)
+	}
+	return (
+		<div className="setup">
+			<button className="extraFlag" onClick={() => changeFlag("extraFlag")}>random flags: <span>false</span></button>
+			<button className="tie" onClick={() => changeFlag("tie")}>tie: <span>false</span></button>
+			<button className="improvedScoring" onClick={() => changeFlag("improvedScoring")}>improved scoring: <span>false</span></button>
+			<button className="randomizedOrder" onClick={() => changeFlag("randomizedOrder")}>randomized order: <span>false</span></button>
+			<Link to="/">Home</Link>
 		</div>
 	)
 }
