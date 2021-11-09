@@ -139,6 +139,7 @@ const StartPage = () => {
 		}
 		else {
 			const game = utils.createGame(5)
+			gtag('event', 'start_game', { 'game': game })
 			const updates = {}
 			updates['/nextGame'] = null
 			updates[`/games/${nextGame}`] = game
