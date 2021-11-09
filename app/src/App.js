@@ -10,7 +10,6 @@ import dog from '../assets/dog.png'
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"
-import { getAnalytics } from "firebase/analytics"
 import { ref, getDatabase, set, update } from "firebase/database"
 import { useObject } from 'react-firebase-hooks/database'
 
@@ -33,12 +32,8 @@ const firebaseConfig = {
 // Initialize Firebase
 //const app = initializeApp(firebaseConfig);
 const app = initializeApp(firebaseConfig)
-const analytics = getAnalytics(app)
 
 const db = getDatabase(app)
-
-//console.log("Ditt token är")
-const token = 'some-token'
 
 function App() {
 
@@ -228,6 +223,7 @@ const GamePage = ({ gameId, playerId }) => {
 
 	const cancel = async () => {
 		const updates = {}
+		gtag('event', 'cancel_game', { 'game': JSON.stringify(game) })
 		updates['/nextGame'] = null
 		await update(ref(db), updates)
 		setLocation(`/`)
