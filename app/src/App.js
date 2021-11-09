@@ -10,7 +10,7 @@ import dog from '../assets/dog.png'
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"
-import { ref, getDatabase, set, update } from "firebase/database"
+import { ref, getDatabase, query, set, update, orderByChild } from "firebase/database"
 import { useObject } from 'react-firebase-hooks/database'
 
 // Initialize Firebase
@@ -118,6 +118,11 @@ const StartPage = () => {
 	if (loading) return <div className="fw6 fs5">Loading...</div>
 	const nextGame = snapshot.val()
 	const extraFlag = !!JSON.parse(localStorage.getItem("extraFlag"))
+
+	//const db = getDatabase();
+	//Används för att få fram seanste resultaten
+	const latestResults = query(ref(db, 'games'), orderByChild('finishedTime'));
+	console.log(latestResults)
 
 	const setConsentInStorage = () => {
 		localStorage.setItem('cookieConsent', 'true')
@@ -281,6 +286,9 @@ const QuestionPage = ({ gameId, playerId }) => {
 			await utils.sleep(3000)
 			const updates2 = {}
 			updates2[`/games/${gameId}/status`] = 'finished'
+
+			updates2[`/games/${gameId}/finishedTime`] = Date.now()
+
 			await update(ref(db), updates2)
 		}
 	}
@@ -319,6 +327,7 @@ const QuestionPage = ({ gameId, playerId }) => {
 }
 
 const QuickResults = ({ you, opponent }) => {
+
 	return (
 		<div className="quick-results">
 			YOU {you} - {opponent} OPPONENT
@@ -340,6 +349,7 @@ const ResultsPage = ({ gameId, playerId }) => {
 	const youWon = (game.score[youKey] > game.score[opponentKey])
 	const youLost = (game.score[youKey] < game.score[opponentKey])
 	const youTie = (game.score[youKey] == game.score[opponentKey])
+
 
 	return (
 		<div className="page">
