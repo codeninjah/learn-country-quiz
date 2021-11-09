@@ -138,7 +138,7 @@ const StartPage = () => {
 			setLocation(`/game/${gameId}/1`)
 		}
 		else {
-			const game = utils.createGame()
+			const game = utils.createGame(5)
 			const updates = {}
 			updates['/nextGame'] = null
 			updates[`/games/${nextGame}`] = game
@@ -274,7 +274,7 @@ const QuestionPage = ({ gameId, playerId }) => {
 		}
 		await update(ref(db), updates)
 
-		if (game.currentQuestion < Object.values(game.questions).length) {
+		if (game.currentQuestion < Object.values(game.questions).length - 1) {
 			await utils.sleep(3000)
 			const updates2 = {}
 			updates2[`/games/${gameId}/currentQuestion`] = parseInt(game.currentQuestion) + 1
@@ -340,15 +340,14 @@ const ResultsPage = ({ gameId, playerId }) => {
 	const opponentKey = `player${parseInt(playerId) === 1 ? 2 : 1}`
 
 
-	const youWon = (game.score[youKey] >= game.score[opponentKey])
-	const youLost = (game.score[youKey] <= game.score[opponentKey])
+	const youWon = (game.score[youKey] > game.score[opponentKey])
+	const youLost = (game.score[youKey] < game.score[opponentKey])
 	const youTie = (game.score[youKey] == game.score[opponentKey])
 
-	console.log(tieFlag)
 	return (
 		<div className="page">
 			{youTie && tieFlag && <Tie you={game.score[youKey]} opponent={game.score[opponentKey]} />}
-			{youWon && !tieFlag && <Won you={game.score[youKey]} opponent={game.score[opponentKey]} />}
+			{(youWon || youTie && !tieFlag) && <Won you={game.score[youKey]} opponent={game.score[opponentKey]} />}
 			{youLost && !youTie && <Lost you={game.score[youKey]} opponent={game.score[opponentKey]} />}
 			<Link href="/" className="re-home link">Home</Link>
 		</div>

@@ -11,14 +11,16 @@ describe("randomQuestions", () => {
     assert.equal(unique.length, 4)
   })
   it('returns a unique list of answers', () => {
-    const response = randomQuestions
+    const response = randomQuestions(5)
+
     const countryArray = []
-    for (let i = 0; i < Object.keys(response).length-1; i++) {
-      countryArray.push(response[i+1].correct)
+    for (let i = 0; i < Object.keys(response).length; i++) {
+      countryArray.push(response[i].correct)
     }
+
     const unique = [...new Set(countryArray)]
 
-    assert.equal(unique.length, 4)
+    assert.equal(unique.length, 5)
   })
 })
 

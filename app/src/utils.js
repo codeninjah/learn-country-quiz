@@ -1,18 +1,10 @@
 import countries from './countries.js'
 
-//const flags = []
-const flags = Object.keys(countries)
-console.log(flags)
-
-//let rnd1 = Math.floor(Math.random() * (flags.length -1))
-//let rnd2 = Math.floor(Math.random() * (flags.length -1))
-//let rnd3 = Math.floor(Math.random() * (flags.length -1))
-//let rnd4 = Math.floor(Math.random() * (flags.length -1))
-
 export const randomFlags = () => {
 	const flagList = Object.keys(countries)
 	const newFlagList = {}
 	const rightAnswer = Math.round(Math.random() * 3)
+
 	for (let i = 0; i < 4; i++) {
 		let unique = false
 		while (!unique) {
@@ -23,14 +15,12 @@ export const randomFlags = () => {
 			}
 		}
 	}
+
 	return {
 		alternatives: newFlagList,
 		correct: newFlagList[rightAnswer]
 	}
 }
-
-const randomFlagList = randomFlags()
-console.log(randomFlagList)
 
 const hardCodedQuestions = {
 	1: {
@@ -53,24 +43,34 @@ const hardCodedQuestions = {
 	}
 }
 
-export const randomQuestions = {
-	1: randomFlags(),
-	2: randomFlags(),
-	3: randomFlags(),
-	4: randomFlags(),
-	5: randomFlags(),
+export const randomQuestions = (n) => {
+	const questions = []
+	const uniqueAnswers = []
+
+	for (let i = 0; i < n; i++) {
+		const question = randomFlags()
+		if (!uniqueAnswers.includes(question.correct)) {
+			questions.push(question)
+			uniqueAnswers.push(question.correct)
+		} else {
+			i--
+		}
+	}
+
+	return {
+		...questions
+	}
 }
 
-export const createGame = () => {
-	//const generatedQuestions = hardCodedQuestions
-	const generatedQuestions = localStorage.getItem("randomisedOrder") ? randomQuestions : hardCodedQuestions
+export const createGame = (n) => {
+	const generatedQuestions = localStorage.getItem("randomisedOrder") ? randomQuestions(n) : hardCodedQuestions
+
 	return {
-		currentQuestion: 1,
+		currentQuestion: 0,
 		questions: generatedQuestions,
 		score: { player1: 0, player2: 0 },
 		status: 'starting',
 	}
 }
-
 
 export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
