@@ -139,7 +139,7 @@ const StartPage = () => {
 		}
 		else {
 			const game = utils.createGame(5)
-			gtag('event', 'start_game', { 'game': game })
+			gtag('event', 'start_game', { 'game': JSON.stringify(game) })
 			const updates = {}
 			updates['/nextGame'] = null
 			updates[`/games/${nextGame}`] = game
