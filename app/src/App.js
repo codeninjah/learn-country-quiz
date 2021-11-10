@@ -393,8 +393,8 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 	const opponentKey = `player${parseInt(playerId) === 1 ? 2 : 1}`
 
 	const question = game.questions[`${game.currentQuestion}`]
-<<<<<<< HEAD
 	console.log(game)
+	
 	const countDown = async () => {
 		const updates2 = {}
 		updates2[`/games/${gameId}/countDown`] = 3
@@ -411,17 +411,10 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 		console.log("done")
 	}
 
-=======
-	showQuestion = performance.now()
->>>>>>> a0530b06264345392ab9a89dcaa5498dc73f8c30
 	if (!question) return 'Loading...'
 
 	const answer = async (countryCode) => {
 		if (question.fastest) return
-<<<<<<< HEAD
-		
-		await countDown()
-=======
 		answerQuestion = performance.now()
 		const answeringTime = (((answerQuestion - showQuestion) / 1000).toFixed(2))
 
@@ -430,7 +423,6 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 		} else {
 			gtag('event', 'answer-time-stacked', { time: `${answeringTime} seconds` })
 		}
->>>>>>> a0530b06264345392ab9a89dcaa5498dc73f8c30
 
 		const updates = {}
 		updates[`/games/${gameId}/questions/${game.currentQuestion}/fastest`] = { player: playerId, answer: countryCode }
