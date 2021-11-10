@@ -1,10 +1,10 @@
 import assert from 'assert'
-import { randomFlags, randomQuestions } from './utils.js'
+import { randomFlagObject, randomQuestions } from './utils.js'
 
 
 describe("randomQuestions", () => {
   it('returns a unique list of countries', () => {
-    const response = randomFlags()
+    const response = randomFlagObject()
     const countryArray = Object.values(response.alternatives)
     const unique = [...new Set(countryArray)]
 
@@ -12,7 +12,6 @@ describe("randomQuestions", () => {
   })
   it('returns a unique list of answers', () => {
     const response = randomQuestions(5)
-
     const countryArray = []
     for (let i = 0; i < Object.keys(response).length; i++) {
       countryArray.push(response[i].correct)
