@@ -369,11 +369,29 @@ const QuestionPage = ({ gameId, playerId }) => {
 	const opponentKey = `player${parseInt(playerId) === 1 ? 2 : 1}`
 
 	const question = game.questions[`${game.currentQuestion}`]
+	console.log(game)
+	const countDown = async () => {
+		const updates2 = {}
+		updates2[`/games/${gameId}/countDown`] = 3
+		await update(ref(db), updates2)
+		let updateCount;
+		updateCount = setInterval( async () => {
+			updates2[`/games/${gameId}/countDown`] = parseInt(game.countDown) - 1
+			await update(ref(db), updates2)
+			if (parseInt(game.countDown) == 0) {
+				clearInterval(updateCount)
+			}
+		}, 1000)
+
+		console.log("done")
+	}
 
 	if (!question) return 'Loading...'
 
 	const answer = async (countryCode) => {
 		if (question.fastest) return
+		
+		await countDown()
 
 		const updates = {}
 		updates[`/games/${gameId}/questions/${game.currentQuestion}/fastest`] = { player: playerId, answer: countryCode }

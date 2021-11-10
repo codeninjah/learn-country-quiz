@@ -35,7 +35,7 @@ export const randomFlagObject = () => {
 }
 
 const hardCodedQuestions = {
-	1: {
+	0: {
 		alternatives: {
 			1: 'blz',
 			2: 'fra',
@@ -44,7 +44,7 @@ const hardCodedQuestions = {
 		},
 		correct: 'swe',
 	},
-	2: {
+	1: {
 		alternatives: {
 			1: 'blz',
 			2: 'fra',
