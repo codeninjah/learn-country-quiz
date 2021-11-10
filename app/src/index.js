@@ -17,7 +17,7 @@ if (!profile) {
 const consent = localStorage.getItem('cookieConsent')
 
 if (consent) {
-  window['ga-disable-GA_MEASUREMENT_ID'] = false
+  window['ga-disable-G-S56RDCKLLD'] = false
 }
 
 ReactDOM.render(

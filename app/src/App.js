@@ -212,7 +212,7 @@ const StartPage = () => {
 
 	const setConsentInStorage = () => {
 		localStorage.setItem('cookieConsent', 'true')
-		window['ga-disable-GA_MEASUREMENT_ID'] = false
+		window['ga-disable-G-S56RDCKLLD'] = false
 		setConsent(true)
 	}
 
