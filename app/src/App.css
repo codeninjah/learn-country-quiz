@@ -42,7 +42,6 @@
 }
 
 .footer {
-	background: var(--blue);
 	height: 10vh;
 }
 
@@ -228,4 +227,47 @@
 	background-color: #afafaf;
 	padding: 2rem;
 	margin-bottom: 3rem;
+}
+
+.advanced-setup-wrapper {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	max-width: 40rem;
+}
+
+.advanced-setup-table {
+	border-collapse: collapse;
+	border-spacing: 4rem;
+	margin-bottom: 4rem;
+}
+
+td {
+	text-align: center;
+	height: 3rem;
+	width: 10rem;
+}
+
+.profile-cap {
+	text-align: left;
+}
+
+select {
+	border-radius: 5px;
+	color: white;
+	outline: none;
+	border: none;
+	font-weight: bold;
+	padding: 0.2rem 0.5rem;
+}
+
+.back-button {
+	background-color: #565656;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
+	outline: none;
+	border: none;
+	font-weight: bold;
+	padding: 0.2rem 0.5rem;
 }

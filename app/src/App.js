@@ -4,6 +4,7 @@ import { Link, Route, useLocation } from "wouter"
 import { customAlphabet } from 'nanoid'
 import './App.css'
 import * as utils from './utils'
+import UpdateTable from './components/UpdateTable'
 import countries from './countries'
 import winning from '../assets/winning.png'
 import dog from '../assets/dog.png'
@@ -36,6 +37,11 @@ const app = initializeApp(firebaseConfig)
 const db = getDatabase(app)
 
 function App() {
+	const [snapshot, loading, error] = useObject(ref(db, `profiles`))
+	const profile = localStorage.getItem('profile')
+
+	if (loading) { return <p>Loading...</p> }
+	if (error) { return <p>Something went wrong!</p> }
 
 	return (
 		<div className="app">
@@ -55,8 +61,11 @@ function App() {
 				<Route path="/setup">
 					<Setup />
 				</Route>
+				<Route path="/setup-advanced">
+					<AdvancedSetup />
+				</Route>
 			</div>
-			<div className="footer"></div>
+			<div className="footer" style={{ backgroundColor: snapshot.val()[profile].background }}></div>
 		</div>
 	)
 }
@@ -74,6 +83,19 @@ const CookieBanner = ({ setConsent, setLocation }) => {
 }
 
 const Setup = () => {
+	const [profile, setProfile] = useState(localStorage.getItem('profile'))
+
+	const updateProfile = (newProfile) => {
+
+		if (newProfile !== 'none') {
+			localStorage.setItem('profile', newProfile)
+		} else {
+			localStorage.removeItem('profile')
+		}
+
+		setProfile(newProfile)
+	}
+
 	const changeFlag = (flagString) => {
 		const flag = !!JSON.parse(localStorage.getItem(flagString))
 		localStorage.setItem(flagString, JSON.stringify(!flag))
@@ -85,7 +107,58 @@ const Setup = () => {
 			<button className="tie" onClick={() => changeFlag("tie")}>tie: <span>false</span></button>
 			<button className="improvedScoring" onClick={() => changeFlag("improvedScoring")}>improved scoring: <span>false</span></button>
 			<button className="randomizedOrder" onClick={() => changeFlag("randomizedOrder")}>randomized order: <span>false</span></button>
+			<label>Chosen profile:</label>
+			<select value={profile || 'none'} onChange={(e) => updateProfile(e.target.value)} style={{ backgroundColor: '#676767' }}>
+				<option value="none">Not set</option>
+				<option value="alpha">Alpha</option>
+				<option value="beta">Beta</option>
+				<option value="pilots">Pilots</option>
+				<option value="rest">Rest</option>
+			</select>
 			<Link to="/">Home</Link>
+		</div>
+	)
+}
+
+const AdvancedSetup = () => {
+	const [location, setLocation] = useLocation()
+	const [snapshot, loading, error] = useObject(ref(db, `profiles`))
+
+	if (loading) { return <p>Loading...</p> }
+	if (error) { return <p>Something went wrong...</p> }
+
+	const updateProps = {
+		updateGrid: async (profile) => {
+			const updates = {}
+			updates[`/profiles/${profile}/grid`] = !snapshot.val()[profile].grid
+			await update(ref(db), updates)
+		},
+		updateLatestGames: async (profile) => {
+			const updates = {}
+			updates[`/profiles/${profile}/latestGames`] = !snapshot.val()[profile].latestGames
+			await update(ref(db), updates)
+		},
+		updateCountdown: async (profile) => {
+			const updates = {}
+			updates[`/profiles/${profile}/countdown`] = !snapshot.val()[profile].countdown
+			await update(ref(db), updates)
+		},
+		updateNumQuestions: async (profile) => {
+			const updates = {}
+			updates[`/profiles/${profile}/numQuestions`] = !snapshot.val()[profile].numQuestions
+			await update(ref(db), updates)
+		},
+		updateBackground: async (profile, color) => {
+			const updates = {}
+			updates[`/profiles/${profile}/background`] = color
+			await update(ref(db), updates)
+		}
+	}
+
+	return (
+		<div className="advanced-setup-wrapper">
+			<UpdateTable snapshot={snapshot.val()} updateProps={updateProps} />
+			<button className="back-button" type="button" onClick={() => setLocation('/')}>BACK</button>
 		</div>
 	)
 }
@@ -171,6 +244,8 @@ const StartPage = () => {
 					))}
 				</div>
 				<div className="button btn-square" onClick={play}>Play</div>
+				<Link href="/setup">SETUP</Link>
+				<Link href="/setup-advanced">ADVANCED SETUP</Link>
 				{
 					!consent && (
 						<CookieBanner setLocation={setLocation} setConsent={setConsentInStorage} />
