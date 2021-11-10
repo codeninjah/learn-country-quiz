@@ -65,7 +65,6 @@
 }
 
 .footer {
-	background: var(--blue);
 	height: 10vh;
 }
 
@@ -80,6 +79,28 @@
 	justify-content: center;
 	align-items: center;
 }
+
+/*
+.questions-page {
+	background: #FFFFFF;
+	box-shadow: 0 2px 4px 1px rgba(0,0,0,0.15);
+	width: 90vw;
+	max-width: 900px;
+	min-height: 50vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	
+	display: grid;
+}
+*/
+
+/*
+.f32 {
+	display: grid;
+}
+*/
 
 .st-flags {
 	display: flex;
@@ -117,14 +138,25 @@
 
 .alternatives {
 	margin-top: 2rem;
+	/* This was added */
+	display: grid;
+	grid-template-columns: 100px 100px;
+  	grid-template-rows: 80px 80px; 
+  	column-gap: 150px;
+  	row-gap: 50px;
+	justify-items: center;
+	align-items: start;
+	justify-content: space-around;
 }
+
 
 .alt {
 	background: #F0F0F0;
 	border: 1px solid #E6E6E6;
-	margin: 1rem;
-	width: 80vw;
+	/*margin: 1rem;*/
+	width: 230px;
 	max-width: 700px;
+	height: 100px;
 	text-align: center;
 	padding: 0.9rem;
 	font-size: 1.6rem;
@@ -218,4 +250,47 @@
 	background-color: #afafaf;
 	padding: 2rem;
 	margin-bottom: 3rem;
+}
+
+.advanced-setup-wrapper {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	max-width: 40rem;
+}
+
+.advanced-setup-table {
+	border-collapse: collapse;
+	border-spacing: 4rem;
+	margin-bottom: 4rem;
+}
+
+td {
+	text-align: center;
+	height: 3rem;
+	width: 10rem;
+}
+
+.profile-cap {
+	text-align: left;
+}
+
+select {
+	border-radius: 5px;
+	color: white;
+	outline: none;
+	border: none;
+	font-weight: bold;
+	padding: 0.2rem 0.5rem;
+}
+
+.back-button {
+	background-color: #565656;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
+	outline: none;
+	border: none;
+	font-weight: bold;
+	padding: 0.2rem 0.5rem;
 }

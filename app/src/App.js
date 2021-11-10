@@ -4,14 +4,14 @@ import { Link, Route, useLocation } from "wouter"
 import { customAlphabet } from 'nanoid'
 import './App.css'
 import * as utils from './utils'
+import UpdateTable from './components/UpdateTable'
 import countries from './countries'
 import winning from '../assets/winning.png'
 import dog from '../assets/dog.png'
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"
-import { getAnalytics } from "firebase/analytics"
-import { ref, getDatabase, set, update } from "firebase/database"
+import { ref, getDatabase, query, set, update, orderByChild } from "firebase/database"
 import { useObject } from 'react-firebase-hooks/database'
 
 // Initialize Firebase
@@ -33,14 +33,15 @@ const firebaseConfig = {
 // Initialize Firebase
 //const app = initializeApp(firebaseConfig);
 const app = initializeApp(firebaseConfig)
-const analytics = getAnalytics(app)
 
 const db = getDatabase(app)
 
-//console.log("Ditt token är")
-const token = 'some-token'
-
 function App() {
+	const [snapshot, loading, error] = useObject(ref(db, `profiles`))
+	const profile = localStorage.getItem('profile')
+
+	if (loading) { return <p>Loading...</p> }
+	if (error) { return <p>Something went wrong!</p> }
 
 	return (
 		<div className="app">
@@ -60,8 +61,11 @@ function App() {
 				<Route path="/setup">
 					<Setup />
 				</Route>
+				<Route path="/setup-advanced">
+					<AdvancedSetup />
+				</Route>
 			</div>
-			<div className="footer"></div>
+			<div className="footer" style={{ backgroundColor: snapshot.val()[profile].background }}></div>
 		</div>
 	)
 }
@@ -79,6 +83,19 @@ const CookieBanner = ({ setConsent, setLocation }) => {
 }
 
 const Setup = () => {
+	const [profile, setProfile] = useState(localStorage.getItem('profile'))
+
+	const updateProfile = (newProfile) => {
+
+		if (newProfile !== 'none') {
+			localStorage.setItem('profile', newProfile)
+		} else {
+			localStorage.removeItem('profile')
+		}
+
+		setProfile(newProfile)
+	}
+
 	const changeFlag = (flagString) => {
 		let flag = !!JSON.parse(localStorage.getItem(flagString))
 		localStorage.setItem(flagString, JSON.stringify(!flag))
@@ -92,7 +109,58 @@ const Setup = () => {
 			<button className="improvedScoring" onClick={() => changeFlag("improvedScoring")}>improved scoring: <span>false</span></button>
 			<button className="randomizedOrder" onClick={() => changeFlag("randomizedOrder")}>randomized order: <span>false</span></button>
 			<button className="numOfQuestFlag" onClick={() => changeFlag("numOfQuestFlag")}>randomized order: <span>false</span></button>
+			<label>Chosen profile:</label>
+			<select value={profile || 'none'} onChange={(e) => updateProfile(e.target.value)} style={{ backgroundColor: '#676767' }}>
+				<option value="none">Not set</option>
+				<option value="alpha">Alpha</option>
+				<option value="beta">Beta</option>
+				<option value="pilots">Pilots</option>
+				<option value="rest">Rest</option>
+			</select>
 			<Link to="/">Home</Link>
+		</div>
+	)
+}
+
+const AdvancedSetup = () => {
+	const [location, setLocation] = useLocation()
+	const [snapshot, loading, error] = useObject(ref(db, `profiles`))
+
+	if (loading) { return <p>Loading...</p> }
+	if (error) { return <p>Something went wrong...</p> }
+
+	const updateProps = {
+		updateGrid: async (profile) => {
+			const updates = {}
+			updates[`/profiles/${profile}/grid`] = !snapshot.val()[profile].grid
+			await update(ref(db), updates)
+		},
+		updateLatestGames: async (profile) => {
+			const updates = {}
+			updates[`/profiles/${profile}/latestGames`] = !snapshot.val()[profile].latestGames
+			await update(ref(db), updates)
+		},
+		updateCountdown: async (profile) => {
+			const updates = {}
+			updates[`/profiles/${profile}/countdown`] = !snapshot.val()[profile].countdown
+			await update(ref(db), updates)
+		},
+		updateNumQuestions: async (profile) => {
+			const updates = {}
+			updates[`/profiles/${profile}/numQuestions`] = !snapshot.val()[profile].numQuestions
+			await update(ref(db), updates)
+		},
+		updateBackground: async (profile, color) => {
+			const updates = {}
+			updates[`/profiles/${profile}/background`] = color
+			await update(ref(db), updates)
+		}
+	}
+
+	return (
+		<div className="advanced-setup-wrapper">
+			<UpdateTable snapshot={snapshot.val()} updateProps={updateProps} />
+			<button className="back-button" type="button" onClick={() => setLocation('/')}>BACK</button>
 		</div>
 	)
 }
@@ -137,6 +205,11 @@ const StartPage = () => {
 			add ? setCount(count + 1) : setCount(count - 1)
 		}
 	}
+	//const db = getDatabase();
+	//Används för att få fram seanste resultaten
+	const latestResults = query(ref(db, 'games'), orderByChild('finishedTime'));
+	console.log(latestResults)
+
 	const setConsentInStorage = () => {
 		localStorage.setItem('cookieConsent', 'true')
 		setConsent(true)
@@ -165,40 +238,40 @@ const StartPage = () => {
 			await update(ref(db), updates2)
 		}
 	}
-	return (
-		<div className="page">
-			{
-				extraFlag ? (
+		return (
+			<div className="page">
+{
+			extraFlag ? (
 				<div className="st-flags">
 					{utils.randomFlags().map(flag => (
 						<div className="f32" key={flag + 2}><div className={`flag ${flag}`}></div></div>
 					))}
 				</div>
 				) : (
-				<div className="st-flags">
-					<div className="f32"><div className={`flag aze`}></div></div>
-					<div className="f32"><div className={`flag bih`}></div></div>
-					<div className="f32"><div className={`flag brb`}></div></div>
-					<div className="f32"><div className={`flag swe`}></div></div>
-					<div className="f32"><div className={`flag bgd`}></div></div>
-					<div className="f32"><div className={`flag bel`}></div></div>
-					<div className="f32"><div className={`flag bfa`}></div></div>
-					<div className="f32"><div className={`flag bgr`}></div></div>
-					<div className="f32"><div className={`flag bhr`}></div></div>
-					<div className="f32"><div className={`flag bdi`}></div></div>
-					<div className="f32"><div className={`flag ben`}></div></div>
-					<div className="f32"><div className={`flag bmu`}></div></div>
-					<div className="f32"><div className={`flag brn`}></div></div>
-					<div className="f32"><div className={`flag bol`}></div></div>
-					<div className="f32"><div className={`flag bra`}></div></div>
-					<div className="f32"><div className={`flag bhs`}></div></div>
-					<div className="f32"><div className={`flag btn`}></div></div>
-					<div className="f32"><div className={`flag fra`}></div></div>
-					<div className="f32"><div className={`flag bwa`}></div></div>
-				</div>
-				)
-			}
-			{
+					<div className="st-flags">
+						<div className="f32"><div className={`flag aze`}></div></div>
+						<div className="f32"><div className={`flag bih`}></div></div>
+						<div className="f32"><div className={`flag brb`}></div></div>
+						<div className="f32"><div className={`flag swe`}></div></div>
+						<div className="f32"><div className={`flag bgd`}></div></div>
+						<div className="f32"><div className={`flag bel`}></div></div>
+						<div className="f32"><div className={`flag bfa`}></div></div>
+						<div className="f32"><div className={`flag bgr`}></div></div>
+						<div className="f32"><div className={`flag bhr`}></div></div>
+						<div className="f32"><div className={`flag bdi`}></div></div>
+						<div className="f32"><div className={`flag ben`}></div></div>
+						<div className="f32"><div className={`flag bmu`}></div></div>
+						<div className="f32"><div className={`flag brn`}></div></div>
+						<div className="f32"><div className={`flag bol`}></div></div>
+						<div className="f32"><div className={`flag bra`}></div></div>
+						<div className="f32"><div className={`flag bhs`}></div></div>
+						<div className="f32"><div className={`flag btn`}></div></div>
+						<div className="f32"><div className={`flag fra`}></div></div>
+						<div className="f32"><div className={`flag bwa`}></div></div>
+					</div>
+					)
+					}
+					{
 				numOfQuestFlag ? (
 					<div className="playContainer">
 						<div className="button btn-square" onClick={() => play(count)}>Play</div>
@@ -212,7 +285,9 @@ const StartPage = () => {
 				(
 					<div className="button btn-square" onClick={() => play(false)}>Play</div>
 				)
-			}
+				}
+			<Link href="/setup">SETUP</Link>
+			<Link href="/setup-advanced">ADVANCED SETUP</Link>
 			{
 				!consent && (
 					<CookieBanner setLocation={setLocation} setConsent={setConsentInStorage} />
@@ -231,6 +306,7 @@ const GamePage = ({ gameId, playerId }) => {
 
 	const cancel = async () => {
 		const updates = {}
+		gtag('event', 'cancel_game', { 'game': JSON.stringify(game) })
 		updates['/nextGame'] = null
 		await update(ref(db), updates)
 		setLocation(`/`)
@@ -288,6 +364,9 @@ const QuestionPage = ({ gameId, playerId }) => {
 			await utils.sleep(3000)
 			const updates2 = {}
 			updates2[`/games/${gameId}/status`] = 'finished'
+
+			updates2[`/games/${gameId}/finishedTime`] = Date.now()
+
 			await update(ref(db), updates2)
 		}
 	}
@@ -326,6 +405,7 @@ const QuestionPage = ({ gameId, playerId }) => {
 }
 
 const QuickResults = ({ you, opponent }) => {
+
 	return (
 		<div className="quick-results">
 			YOU {you} - {opponent} OPPONENT
@@ -347,6 +427,7 @@ const ResultsPage = ({ gameId, playerId }) => {
 	const youWon = (game.score[youKey] > game.score[opponentKey])
 	const youLost = (game.score[youKey] < game.score[opponentKey])
 	const youTie = (game.score[youKey] == game.score[opponentKey])
+
 
 	return (
 		<div className="page">
