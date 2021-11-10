@@ -80,8 +80,9 @@ const CookieBanner = ({ setConsent, setLocation }) => {
 
 const Setup = () => {
 	const changeFlag = (flagString) => {
-		const flag = !!JSON.parse(localStorage.getItem(flagString))
+		let flag = !!JSON.parse(localStorage.getItem(flagString))
 		localStorage.setItem(flagString, JSON.stringify(!flag))
+		flag = !!JSON.parse(localStorage.getItem(flagString))
 		document.querySelector("." + flagString + " span").innerText = JSON.stringify(flag)
 	}
 	return (
@@ -90,6 +91,7 @@ const Setup = () => {
 			<button className="tie" onClick={() => changeFlag("tie")}>tie: <span>false</span></button>
 			<button className="improvedScoring" onClick={() => changeFlag("improvedScoring")}>improved scoring: <span>false</span></button>
 			<button className="randomizedOrder" onClick={() => changeFlag("randomizedOrder")}>randomized order: <span>false</span></button>
+			<button className="numOfQuestFlag" onClick={() => changeFlag("numOfQuestFlag")}>randomized order: <span>false</span></button>
 			<Link to="/">Home</Link>
 		</div>
 	)
@@ -118,18 +120,29 @@ const CookieInfo = () => {
 
 const StartPage = () => {
 	const [consent, setConsent] = useState(!!localStorage.getItem('cookieConsent'))
+	const [count, setCount] = useState(5);
 	const [snapshot, loading, error] = useObject(ref(db, 'nextGame'))
 	const [location, setLocation] = useLocation()
 	if (loading) return <div className="fw6 fs5">Loading...</div>
 	const nextGame = snapshot.val()
 	const extraFlag = !!JSON.parse(localStorage.getItem("extraFlag"))
+	const numOfQuestFlag = !!JSON.parse(localStorage.getItem("numOfQuestFlag"))
 
+	const changeValue = (add) => {
+		if (count >= 10 && add) {
+			setCount(0)
+		} else if (count <= 0 && !add) {
+			setCount(10)
+		} else {
+			add ? setCount(count + 1) : setCount(count - 1)
+		}
+	}
 	const setConsentInStorage = () => {
 		localStorage.setItem('cookieConsent', 'true')
 		setConsent(true)
 	}
 
-	const play = async () => {
+	const play = async (numOfQuest) => {
 		if (R.isNil(nextGame)) {
 			const updates = {}
 			const gameId = nanoid()
@@ -138,7 +151,7 @@ const StartPage = () => {
 			setLocation(`/game/${gameId}/1`)
 		}
 		else {
-			const game = utils.createGame(5)
+			const game = numOfQuest ? utils.createGame(numOfQuest) : utils.createGame(5)
 			gtag('event', 'start_game', { 'game': JSON.stringify(game) })
 			const updates = {}
 			updates['/nextGame'] = null
@@ -152,41 +165,16 @@ const StartPage = () => {
 			await update(ref(db), updates2)
 		}
 	}
-	if (extraFlag) {
-		const randomFlags = () => {
-			const flagList = Object.keys(countries)
-			const newFlagList = []
-			for (let i = 0; i < 16; i++) {
-				let unique = false
-				while (!unique) {
-					let number = Math.floor(Math.random() * (flagList.length - 1))
-					if (!newFlagList.includes(flagList[number].toLowerCase())) {
-						newFlagList.push(flagList[number].toLowerCase())
-						unique = !unique
-					}
-				}
-			}
-			return newFlagList
-		}
-		return (
-			<div className="page">
+	return (
+		<div className="page">
+			{
+				extraFlag ? (
 				<div className="st-flags">
-					{randomFlags().map(flag => (
+					{utils.randomFlags().map(flag => (
 						<div className="f32" key={flag + 2}><div className={`flag ${flag}`}></div></div>
 					))}
 				</div>
-				<div className="button btn-square" onClick={play}>Play</div>
-				{
-					!consent && (
-						<CookieBanner setLocation={setLocation} setConsent={setConsentInStorage} />
-					)
-				}
-			</div>
-		)
-	}
-	else {
-		return (
-			<div className="page">
+				) : (
 				<div className="st-flags">
 					<div className="f32"><div className={`flag aze`}></div></div>
 					<div className="f32"><div className={`flag bih`}></div></div>
@@ -208,15 +196,30 @@ const StartPage = () => {
 					<div className="f32"><div className={`flag fra`}></div></div>
 					<div className="f32"><div className={`flag bwa`}></div></div>
 				</div>
-				<div className="button btn-square" onClick={play}>Play</div>
-				{
-					!consent && (
-						<CookieBanner setLocation={setLocation} setConsent={setConsentInStorage} />
-					)
-				}
-			</div>
-		)
-	}
+				)
+			}
+			{
+				numOfQuestFlag ? (
+					<div className="playContainer">
+						<div className="button btn-square" onClick={() => play(count)}>Play</div>
+						<div className="countContainer">
+							<div className="btn-square" onClick={() => changeValue(true)}>+</div>
+							<div className="btn-square" onClick={() => changeValue(false)}>-</div>
+						</div>
+						<p>number of questions: {count}</p>
+					</div>
+				) :
+				(
+					<div className="button btn-square" onClick={() => play(false)}>Play</div>
+				)
+			}
+			{
+				!consent && (
+					<CookieBanner setLocation={setLocation} setConsent={setConsentInStorage} />
+				)
+			}
+		</div>
+	)
 }
 
 const GamePage = ({ gameId, playerId }) => {

@@ -2,17 +2,29 @@ import countries from './countries.js'
 
 export const randomFlags = () => {
 	const flagList = Object.keys(countries)
+	const newFlagList = []
+	for (let i = 0; i < 16; i++) {
+		let number = Math.floor(Math.random() * (flagList.length - 1))
+		if (!newFlagList.includes(flagList[number].toLowerCase())) {
+			newFlagList.push(flagList[number].toLowerCase())
+		} else {
+			i--
+		}
+	}
+	return newFlagList
+}
+
+export const randomFlagObject = () => {
+	const flagList = Object.keys(countries)
 	const newFlagList = {}
 	const rightAnswer = Math.round(Math.random() * 3)
 
 	for (let i = 0; i < 4; i++) {
-		let unique = false
-		while (!unique) {
-			let number = Math.floor(Math.random() * (flagList.length - 1))
-			if (!Object.values(newFlagList).includes(flagList[number].toLowerCase())) {
-				newFlagList[i] = flagList[number].toLowerCase()
-				unique = !unique
-			}
+		let number = Math.floor(Math.random() * (flagList.length - 1))
+		if (!Object.values(newFlagList).includes(flagList[number].toLowerCase())) {
+			newFlagList[i] = flagList[number].toLowerCase()
+		} else {
+			i--
 		}
 	}
 
@@ -48,7 +60,7 @@ export const randomQuestions = (n) => {
 	const uniqueAnswers = []
 
 	for (let i = 0; i < n; i++) {
-		const question = randomFlags()
+		const question = randomFlagObject()
 		if (!uniqueAnswers.includes(question.correct)) {
 			questions.push(question)
 			uniqueAnswers.push(question.correct)

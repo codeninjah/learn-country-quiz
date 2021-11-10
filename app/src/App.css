@@ -20,7 +20,30 @@
 	align-items: center;
 	justify-content: center;
 }
-
+.playContainer .countContainer, .playContainer  {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.countContainer {
+	flex-direction: column;
+	margin-left: 2rem;
+}
+.countContainer div {
+	background: var(--grey2);
+	width: 100%;
+	color: var(--grey1);
+	font-size: 1.5rem;
+	font-weight: 700;
+	padding: 1rem;
+	border: 1px solid #E6E6E6;
+	box-shadow: 0 2px 4px 0 rgba(166,166,166,0.50);
+	cursor: pointer;
+}
+.playContainer p {
+	margin-left: 2rem;
+	padding: 1rem;
+}
 .setup {
 	display: flex;
 	flex-direction: column;
@@ -76,7 +99,7 @@
 	cursor: pointer;
 }
 
-.button:hover {
+.button:hover, .countContainer div:hover {
 	background: #E6E6E6;
 }
 
