@@ -166,6 +166,10 @@
 
 .alternatives {
 	margin-top: 2rem;
+}
+
+.alternatives-grid {
+	margin-top: 2rem;
 	/* This was added */
 	display: grid;
 	grid-template-columns: 100px 100px;
@@ -181,7 +185,20 @@
 .alt {
 	background: #F0F0F0;
 	border: 1px solid #E6E6E6;
-	/*margin: 1rem;*/
+	margin: 1rem;
+	width: 230px;
+	max-width: 700px;
+	height: 100px;
+	text-align: center;
+	padding: 0.9rem;
+	font-size: 1.6rem;
+	position: relative;
+}
+
+.alt-grid {
+	background: #F0F0F0;
+	border: 1px solid #E6E6E6;
+	margin: 0;
 	width: 230px;
 	max-width: 700px;
 	height: 100px;
@@ -272,12 +289,17 @@
 .cookie-info-wrapper {
 	display: grid;
 	place-items: center;
+	margin-bottom: 4rem;
 }
 
 .info-box {
-	background-color: #afafaf;
+	align-items: center;
+	background-color: #cecece;
+	display: flex;
+	flex-direction: column;
 	padding: 2rem;
 	margin-bottom: 3rem;
+	max-width: 60%
 }
 
 .advanced-setup-wrapper {
@@ -321,4 +343,8 @@ select {
 	border: none;
 	font-weight: bold;
 	padding: 0.2rem 0.5rem;
+}
+
+.green {
+	background-color: #38B134;
 }
