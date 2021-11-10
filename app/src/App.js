@@ -287,8 +287,6 @@ const StartPage = () => {
 						<div className="button btn-square" onClick={() => play(false)}>Play</div>
 					)
 			}
-			<Link href="/setup">SETUP</Link>
-			<Link href="/setup-advanced">ADVANCED SETUP</Link>
 			{
 				!consent && (
 					<CookieBanner setLocation={setLocation} setConsent={setConsentInStorage} />
