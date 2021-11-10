@@ -224,7 +224,7 @@ const LastGames = () => {
 
 const StartPage = () => {
 	const [consent, setConsent] = useState(!!localStorage.getItem('cookieConsent'))
-	const [count, setCount] = useState(5);
+	const [count, setCount] = useState(5)
 	const [snapshot, loading, error] = useObject(ref(db, 'nextGame'))
 	const [location, setLocation] = useLocation()
 	if (loading) return <div className="fw6 fs5">Loading...</div>
@@ -241,13 +241,10 @@ const StartPage = () => {
 			add ? setCount(count + 1) : setCount(count - 1)
 		}
 	}
-	//const db = getDatabase();
-	//Används för att få fram seanste resultaten
-	//const latestResults = query(ref(db, 'games'), orderByChild('finishedTime'));
-	//console.log(latestResults)
 
 	const setConsentInStorage = () => {
 		localStorage.setItem('cookieConsent', 'true')
+		window['ga-disable-G-S56RDCKLLD'] = false
 		setConsent(true)
 	}
 
@@ -274,15 +271,15 @@ const StartPage = () => {
 			await update(ref(db), updates2)
 		}
 	}
-		return (
-			<div className="page">
-{
-			extraFlag ? (
-				<div className="st-flags">
-					{utils.randomFlags().map(flag => (
-						<div className="f32" key={flag + 2}><div className={`flag ${flag}`}></div></div>
-					))}
-				</div>
+	return (
+		<div className="page">
+			{
+				extraFlag ? (
+					<div className="st-flags">
+						{utils.randomFlags().map(flag => (
+							<div className="f32" key={flag + 2}><div className={`flag ${flag}`}></div></div>
+						))}
+					</div>
 				) : (
 					<div className="st-flags">
 						<div className="f32"><div className={`flag aze`}></div></div>
@@ -305,9 +302,9 @@ const StartPage = () => {
 						<div className="f32"><div className={`flag fra`}></div></div>
 						<div className="f32"><div className={`flag bwa`}></div></div>
 					</div>
-					)
-					}
-					{
+				)
+			}
+			{
 				numOfQuestFlag ? (
 					<div className="playContainer">
 						<div className="button btn-square" onClick={() => play(count)}>Play</div>
@@ -318,12 +315,10 @@ const StartPage = () => {
 						<p>number of questions: {count}</p>
 					</div>
 				) :
-				(
-					<div className="button btn-square" onClick={() => play(false)}>Play</div>
-				)
-				}
-			<Link href="/setup">SETUP</Link>
-			<Link href="/setup-advanced">ADVANCED SETUP</Link>
+					(
+						<div className="button btn-square" onClick={() => play(false)}>Play</div>
+					)
+			}
 			{
 				!consent && (
 					<CookieBanner setLocation={setLocation} setConsent={setConsentInStorage} />
