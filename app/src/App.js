@@ -186,6 +186,42 @@ const CookieInfo = () => {
 	)
 }
 
+const LastGames = () => {
+	const [snapshot, loading, error] = useObject(ref(db, 'games'))
+	
+
+	if (loading) return <div className="fw6 fs5">Loading...</div>
+	const latestResults = snapshot.val()
+	console.log(latestResults)
+	const keys = Object.keys(latestResults)
+
+	const resultList = []
+
+	keys.forEach(element => {
+		if(latestResults[element].finishedTime){
+			resultList.push(latestResults[element])
+		}
+	});
+
+	resultList.sort(function(a, b){
+		console.log(a);
+		return b.finishedTime - a.finishedTime
+	});
+
+	console.log(resultList)
+	return (
+		<div className="result">
+			<h5>Latest games</h5>
+			{resultList.slice(0, 4).map(result => (
+				<div>
+					<p>Player 1  <span>{result.score.player1}</span></p>
+					<p><span>{result.score.player2}</span>  Player 2</p>
+				</div>
+			))}
+		</div>
+	)
+}
+
 const StartPage = () => {
 	const [consent, setConsent] = useState(!!localStorage.getItem('cookieConsent'))
 	const [count, setCount] = useState(5);
@@ -207,8 +243,8 @@ const StartPage = () => {
 	}
 	//const db = getDatabase();
 	//Används för att få fram seanste resultaten
-	const latestResults = query(ref(db, 'games'), orderByChild('finishedTime'));
-	console.log(latestResults)
+	//const latestResults = query(ref(db, 'games'), orderByChild('finishedTime'));
+	//console.log(latestResults)
 
 	const setConsentInStorage = () => {
 		localStorage.setItem('cookieConsent', 'true')
@@ -293,6 +329,7 @@ const StartPage = () => {
 					<CookieBanner setLocation={setLocation} setConsent={setConsentInStorage} />
 				)
 			}
+			<LastGames />
 		</div>
 	)
 }

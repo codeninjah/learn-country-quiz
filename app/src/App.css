@@ -136,6 +136,34 @@
 	cursor: pointer;
 }
 
+.result {
+	display: grid;
+	width: 80%;
+	grid-template-columns: 1fr 1fr;
+	grid-auto-rows: auto;
+}
+.result h5 {
+	grid-column: 1/3;
+	justify-self: center;
+}
+.result div {
+	display: flex;
+	height: fit-content;
+	justify-self: center;
+}
+
+.result p {
+	padding: 0.5rem;
+	display: flex;
+	align-items: center;
+}
+
+.result span {
+	color: purple;
+	font-size: 30px;
+	padding: 0.5rem;
+}
+
 .alternatives {
 	margin-top: 2rem;
 	/* This was added */
