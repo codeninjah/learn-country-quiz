@@ -14,6 +14,12 @@ if (!profile) {
   }
 }
 
+const consent = localStorage.getItem('cookieConsent')
+
+if (consent) {
+  window['ga-disable-GA_MEASUREMENT_ID'] = false
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
