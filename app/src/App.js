@@ -381,6 +381,18 @@ const GamePage = ({ gameId, playerId, profiles }) => {
 	)
 }
 
+const CountDown = ({gameId}) => {
+	const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}/countDown`))
+	if (loading) return <div></div>
+	const count = snapshot.val()
+	if (count == 0) return <div></div>
+	return (
+		<div>
+			<p>Next question in {count} seconds...</p>
+		</div>
+	)
+}
+
 const QuestionPage = ({ gameId, playerId, profiles }) => {
 	const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`))
 	const scoringFlag = !!JSON.parse(localStorage.getItem('improvedScoring'))
@@ -399,16 +411,11 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 		const updates2 = {}
 		updates2[`/games/${gameId}/countDown`] = 3
 		await update(ref(db), updates2)
-		let updateCount;
-		updateCount = setInterval( async () => {
-			updates2[`/games/${gameId}/countDown`] = parseInt(game.countDown) - 1
+		for (let i = 3; i >= 0; i--) {
+			updates2[`/games/${gameId}/countDown`] = i
 			await update(ref(db), updates2)
-			if (parseInt(game.countDown) == 0) {
-				clearInterval(updateCount)
-			}
-		}, 1000)
-
-		console.log("done")
+			await utils.sleep(1000)
+		}
 	}
 
 	if (!question) return 'Loading...'
@@ -417,6 +424,7 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 		if (question.fastest) return
 		answerQuestion = performance.now()
 		const answeringTime = (((answerQuestion - showQuestion) / 1000).toFixed(2))
+		countDown()
 
 		if (profiles[profile].grid) {
 			gtag('event', 'answer-time-grid', { time: `${answeringTime} seconds` })
@@ -481,6 +489,7 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 			{question.fastest &&
 				<QuickResults you={game.score[youKey]} opponent={game.score[opponentKey]} />
 			}
+			<CountDown gameId={gameId}/>
 		</div>
 	)
 }
