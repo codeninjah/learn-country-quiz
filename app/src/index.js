@@ -20,6 +20,11 @@ if (consent) {
   window['ga-disable-G-S56RDCKLLD'] = false
 }
 
+localStorage.setItem('improvedScoring', 'true')
+localStorage.setItem('extraFlag', 'true')
+localStorage.setItem('randomizedOrder', 'true')
+localStorage.setItem('tie', 'true')
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
