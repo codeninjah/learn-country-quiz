@@ -276,7 +276,7 @@ const StartPage = ({ profiles }) => {
 		}
 		else {
 			const game = numOfQuest ? utils.createGame(numOfQuest) : utils.createGame(5)
-			gtag('event', 'start_game', { 'game': JSON.stringify(game) })
+			gtag('event', 'start_game', { 'profile': profile })
 			const updates = {}
 			updates['/nextGame'] = null
 			updates[`/games/${nextGame}`] = game
@@ -362,7 +362,7 @@ const GamePage = ({ gameId, playerId, profiles }) => {
 
 	const cancel = async () => {
 		const updates = {}
-		gtag('event', 'cancel_game', { 'game': JSON.stringify(game) })
+		gtag('event', 'cancel_game', { 'profile': profile })
 		updates['/nextGame'] = null
 		await update(ref(db), updates)
 		setLocation(`/`)
@@ -461,7 +461,7 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 			await update(ref(db), updates2)
 		}
 	}
-	
+
 	return (
 		<div className="page">
 			<div className="f32"><div className={`flag ${question.correct}`}></div></div>
@@ -491,9 +491,9 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 			{question.fastest &&
 				<QuickResults you={game.score[youKey]} opponent={game.score[opponentKey]} />
 			}
-			
-			
-			 {profiles[profile].countdown && <CountDown gameId={gameId} />} 
+
+
+			{profiles[profile].countdown && <CountDown gameId={gameId} />}
 
 		</div>
 	)
