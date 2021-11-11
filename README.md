@@ -1,3 +1,4 @@
+![example workflow](https://github.com/PelleLindroth/learn-cool-problems/actions/workflows/tests.yml/badge.svg)
 # Country Quiz
 This is an exercise to learn about Continious Deployment, trunk based development and feature flags. Divide into teams of 3 and come up with a team name.
 
