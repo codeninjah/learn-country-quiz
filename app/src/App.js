@@ -8,6 +8,7 @@ import UpdateTable from './components/UpdateTable'
 import countries from './countries'
 import winning from '../assets/winning.png'
 import dog from '../assets/dog.png'
+import tie from '../assets/tie.png'
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"
@@ -293,7 +294,7 @@ const StartPage = ({ profiles }) => {
 			{
 				extraFlag ? (
 					<div className="st-flags">
-						{utils.randomFlags().map(flag => (
+						{utils.randomFlags(48).map(flag => (
 							<div className="f32" key={flag + 2}><div className={`flag ${flag}`}></div></div>
 						))}
 					</div>
@@ -556,6 +557,7 @@ const Lost = ({ you, opponent }) => {
 const Tie = ({ you, opponent }) => {
 	return (
 		<div className="results">
+			<img src={tie} style={{ width: '60%' }} />
 			<div className="re-text">It's a TIE...</div>
 			<QuickResults you={you} opponent={opponent} />
 		</div>

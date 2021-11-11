@@ -1,9 +1,9 @@
 import countries from './countries.js'
 
-export const randomFlags = () => {
+export const randomFlags = (n) => {
 	const flagList = Object.keys(countries)
 	const newFlagList = []
-	for (let i = 0; i < 16; i++) {
+	for (let i = 0; i < n; i++) {
 		let number = Math.floor(Math.random() * (flagList.length - 1))
 		if (!newFlagList.includes(flagList[number].toLowerCase())) {
 			newFlagList.push(flagList[number].toLowerCase())
@@ -11,6 +11,7 @@ export const randomFlags = () => {
 			i--
 		}
 	}
+	console.log(newFlagList)
 	return newFlagList
 }
 
