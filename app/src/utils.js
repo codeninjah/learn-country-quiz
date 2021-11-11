@@ -76,7 +76,7 @@ export const randomQuestions = (n) => {
 }
 
 export const createGame = (n) => {
-	const generatedQuestions = localStorage.getItem("randomisedOrder") ? randomQuestions(n) : hardCodedQuestions
+	const generatedQuestions = localStorage.getItem("randomizedOrder") ? randomQuestions(n) : hardCodedQuestions
 
 	return {
 		currentQuestion: 0,

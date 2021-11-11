@@ -381,7 +381,7 @@ const GamePage = ({ gameId, playerId, profiles }) => {
 	)
 }
 
-const CountDown = ({gameId}) => {
+const CountDown = ({ gameId }) => {
 	const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}/countDown`))
 	if (loading) return <div></div>
 	const count = snapshot.val()
@@ -405,8 +405,8 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 	const opponentKey = `player${parseInt(playerId) === 1 ? 2 : 1}`
 
 	const question = game.questions[`${game.currentQuestion}`]
-	console.log(game)
-	
+	showQuestion = performance.now()
+
 	const countDown = async () => {
 		const updates2 = {}
 		updates2[`/games/${gameId}/countDown`] = 3
@@ -423,7 +423,8 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 	const answer = async (countryCode) => {
 		if (question.fastest) return
 		answerQuestion = performance.now()
-		const answeringTime = (((answerQuestion - showQuestion) / 1000).toFixed(2))
+		const answeringTime = ((answerQuestion - showQuestion) / 1000).toFixed(2)
+
 		countDown()
 
 		if (profiles[profile].grid) {
@@ -489,7 +490,7 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 			{question.fastest &&
 				<QuickResults you={game.score[youKey]} opponent={game.score[opponentKey]} />
 			}
-			<CountDown gameId={gameId}/>
+			<CountDown gameId={gameId} />
 		</div>
 	)
 }
