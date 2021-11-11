@@ -293,7 +293,7 @@ const StartPage = ({ profiles }) => {
 			{
 				extraFlag ? (
 					<div className="st-flags">
-						{utils.randomFlags().map(flag => (
+						{utils.randomFlags(48).map(flag => (
 							<div className="f32" key={flag + 2}><div className={`flag ${flag}`}></div></div>
 						))}
 					</div>
