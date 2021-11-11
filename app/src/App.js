@@ -461,7 +461,7 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 			await update(ref(db), updates2)
 		}
 	}
-
+	
 	return (
 		<div className="page">
 			<div className="f32"><div className={`flag ${question.correct}`}></div></div>
@@ -491,7 +491,10 @@ const QuestionPage = ({ gameId, playerId, profiles }) => {
 			{question.fastest &&
 				<QuickResults you={game.score[youKey]} opponent={game.score[opponentKey]} />
 			}
-			<CountDown gameId={gameId} />
+			
+			
+			 {profiles[profile].countdown && <CountDown gameId={gameId} />} 
+
 		</div>
 	)
 }
