@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import * as R from 'ramda'
 import { Link, Route, useLocation } from "wouter"
 import { customAlphabet } from 'nanoid'
+import LogRocket from 'logrocket'
 import './App.css'
 import * as utils from './utils'
 import UpdateTable from './components/UpdateTable'
@@ -263,6 +264,7 @@ const StartPage = ({ profiles }) => {
 	const setConsentInStorage = () => {
 		localStorage.setItem('cookieConsent', 'true')
 		window['ga-disable-G-S56RDCKLLD'] = false
+		LogRocket.init('iw1mxc/learn-quiz')
 		setConsent(true)
 	}
 
